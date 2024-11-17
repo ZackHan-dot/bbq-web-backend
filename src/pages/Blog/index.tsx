@@ -11,7 +11,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button, Drawer, Input, message } from 'antd';
+import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
@@ -21,7 +21,7 @@ import UpdateForm from './components/UpdateForm';
  * @zh-CN 添加节点
  * @param fields
  */
-const handleAdd = async (fields: API.RuleListItem) => {
+const handleAdd = async (fields: API.BlogListItem) => {
   const hide = message.loading('正在添加');
   try {
     await addBlog({ ...fields });
@@ -66,7 +66,7 @@ const handleUpdate = async (fields: FormValueType) => {
  *
  * @param selectedRows
  */
-const handleRemove = async (selectedRows: API.RuleListItem[]) => {
+const handleRemove = async (selectedRows: API.BlogListItem[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
@@ -98,8 +98,8 @@ const Blog: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
+  const [currentRow, setCurrentRow] = useState<API.BlogListItem>();
+  const [selectedRowsState, setSelectedRows] = useState<API.BlogListItem[]>([]);
 
   /**
    * @en-US International configuration
@@ -107,148 +107,75 @@ const Blog: React.FC = () => {
    * */
   const intl = useIntl();
 
-  const columns: ProColumns<API.RuleListItem>[] = [
+  const columns: ProColumns<API.BlogListItem>[] = [
     {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.updateForm.ruleName.nameLabel"
-          defaultMessage="blog name"
-        />
-      ),
-      dataIndex: 'name',
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleDesc" defaultMessage="Description" />,
-      dataIndex: 'desc',
+      title: <FormattedMessage id="pages.blog.list.title" defaultMessage="标题"></FormattedMessage>,
+      dataIndex: 'title',
       valueType: 'textarea',
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.titleCallNo"
-          defaultMessage="Number of service calls"
-        />
-      ),
-      dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      renderText: (val: string) =>
-        `${val}${intl.formatMessage({
-          id: 'pages.searchTable.tenThousand',
-          defaultMessage: ' 万 ',
-        })}`,
+      title: <FormattedMessage id="pages.blog.list.user" defaultMessage="作者" />,
+      dataIndex: 'author',
+      hideInSearch: true,
+      renderText: (val: string, record) => <span>{record?.user.username}</span>,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="Status" />,
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        0: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.default"
-              defaultMessage="Shut down"
-            />
-          ),
-          status: 'Default',
-        },
-        1: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="Running" />
-          ),
-          status: 'Processing',
-        },
-        2: {
-          text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="Online" />
-          ),
-          status: 'Success',
-        },
-        3: {
-          text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.abnormal"
-              defaultMessage="Abnormal"
-            />
-          ),
-          status: 'Error',
-        },
-      },
+      title: <FormattedMessage id="pages.blog.list.published" defaultMessage="是否发布" />,
+      dataIndex: 'published',
+      hideInSearch: true,
+      renderText: (val: boolean) => (val ? '是' : '否'),
     },
     {
-      title: (
-        <FormattedMessage
-          id="pages.searchTable.titleUpdatedAt"
-          defaultMessage="Last scheduled time"
-        />
-      ),
-      sorter: true,
+      title: <FormattedMessage id="pages.blog.list.tags" defaultMessage="标签" />,
+      dataIndex: 'tags',
+      renderText: (val: { name: string }[]) => val?.map((item) => item.name)?.join('，'),
+    },
+    {
+      title: <FormattedMessage id="pages.blog.list.createdAt" defaultMessage="创建日期" />,
+      dataIndex: 'createdAt',
+      valueType: 'dateTime',
+      hideInSearch: true,
+    },
+    {
+      title: <FormattedMessage id="pages.blog.list.updatedAt" defaultMessage="更新日期" />,
       dataIndex: 'updatedAt',
       valueType: 'dateTime',
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
-          return false;
-        }
-        if (`${status}` === '3') {
-          return (
-            <Input
-              {...rest}
-              placeholder={intl.formatMessage({
-                id: 'pages.searchTable.exception',
-                defaultMessage: 'Please enter the reason for the exception!',
-              })}
-            />
-          );
-        }
-        return defaultRender(item);
-      },
-    },
-    {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_, record) => [
-        <a
-          key="config"
-          onClick={() => {
-            handleUpdateModalOpen(true);
-            setCurrentRow(record);
-          }}
-        >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="Configuration" />
-        </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          <FormattedMessage
-            id="pages.searchTable.subscribeAlert"
-            defaultMessage="Subscribe to alerts"
-          />
-        </a>,
-      ],
+      hideInSearch: true,
     },
   ];
 
+  const getBlogList = async ({ current, pageSize }: { current?: number; pageSize?: number }) => {
+    const {
+      code,
+      data,
+      message: msg,
+    } = await blog({
+      currentPage: current,
+      limit: pageSize,
+    });
+    if (code === 200) {
+      return {
+        data: data?.items || [],
+        total: data?.total || 0,
+        success: true,
+      };
+    } else {
+      message.error(msg);
+      return {
+        success: false,
+      };
+    }
+  };
+
   return (
     <PageContainer>
-      <ProTable<API.RuleListItem, API.PageParams>
+      <ProTable<API.BlogListItem, API.PageParams>
         headerTitle={intl.formatMessage({
-          id: 'pages.searchTable.title',
-          defaultMessage: 'Enquiry form',
+          id: 'pages.blog.title',
+          defaultMessage: '博客列表',
         })}
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 120,
         }}
@@ -260,10 +187,10 @@ const Blog: React.FC = () => {
               handleModalOpen(true);
             }}
           >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            <PlusOutlined /> <FormattedMessage id="pages.blog.add" defaultMessage="添加博客" />
           </Button>,
         ]}
-        request={blog}
+        request={getBlogList}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -319,7 +246,7 @@ const Blog: React.FC = () => {
         open={createModalOpen}
         onOpenChange={handleModalOpen}
         onFinish={async (value) => {
-          const success = await handleAdd(value as API.RuleListItem);
+          const success = await handleAdd(value as API.BlogListItem);
           if (success) {
             handleModalOpen(false);
             if (actionRef.current) {
@@ -376,7 +303,7 @@ const Blog: React.FC = () => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<API.RuleListItem>
+          <ProDescriptions<API.BlogListItem>
             column={2}
             title={currentRow?.name}
             request={async () => ({
@@ -385,7 +312,7 @@ const Blog: React.FC = () => {
             params={{
               id: currentRow?.name,
             }}
-            columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
+            columns={columns as ProDescriptionsItemProps<API.BlogListItem>[]}
           />
         )}
       </Drawer>

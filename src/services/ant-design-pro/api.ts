@@ -45,13 +45,13 @@ export async function blog(
   params: {
     // query
     /** 当前的页码 */
-    current?: number;
+    currentPage?: number;
     /** 页面的容量 */
-    pageSize?: number;
+    limit?: number;
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.RuleList>('/api/blogs', {
+  return request<API.BlogList>('/api/blogs', {
     method: 'GET',
     params: {
       ...params,
@@ -62,7 +62,7 @@ export async function blog(
 
 /** 更新规则 PUT /api/blogs/update/:id */
 export async function updateBlog(options?: { [key: string]: any }) {
-  return request<API.RuleListItem>(`/api/blogs/update/${options?.id}`, {
+  return request<API.BlogListItem>(`/api/blogs/update/${options?.id}`, {
     method: 'PUT',
     data: {
       ...(options || {}),
@@ -72,7 +72,7 @@ export async function updateBlog(options?: { [key: string]: any }) {
 
 /** 新建规则 POST /api/blogs/save */
 export async function addBlog(options?: { [key: string]: any }) {
-  return request<API.RuleListItem>('/api/blogs/save', {
+  return request<API.BlogListItem>('/api/blogs/save', {
     method: 'POST',
     data: {
       ...(options || {}),

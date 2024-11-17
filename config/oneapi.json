@@ -220,7 +220,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RuleListItem"
+                  "$ref": "#/components/schemas/BlogListItem"
                 }
               }
             }
@@ -247,7 +247,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RuleListItem"
+                  "$ref": "#/components/schemas/BlogListItem"
                 }
               }
             }
@@ -411,7 +411,7 @@
           }
         }
       },
-      "RuleListItem": {
+      "BlogListItem": {
         "type": "object",
         "properties": {
           "key": {
@@ -464,7 +464,7 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/RuleListItem"
+              "$ref": "#/components/schemas/BlogListItem"
             }
           },
           "total": {
@@ -560,7 +560,9 @@
             "type": "string",
             "format": "any"
           },
-          "key": { "type": "string" },
+          "key": {
+            "type": "string"
+          },
           "read": {
             "type": "boolean"
           },
