@@ -124,7 +124,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResult"
+                  "$ref": "#/components/schemas/ResponseResult"
                 }
               }
             }
@@ -386,7 +386,7 @@
           }
         }
       },
-      "LoginResult": {
+      "ResponseResult": {
         "type": "object",
         "properties": {
           "status": {

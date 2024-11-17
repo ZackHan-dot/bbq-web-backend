@@ -38,5 +38,8 @@ export default {
   'pages.blog.list.published': '是否发布',
   'pages.blog.list.coverLinked': '封面链接',
   'pages.blog.list.createdAt': '创建日期',
-  'pages.blog.list.updatedAt': '编辑日期',
+  'pages.blog.list.updatedAt': '更新日期',
+  'pages.blog.chosen': '已选择',
+  'pages.blog.item': '项',
+  'pages.blog.batchDeletion': '批量删除',
 };

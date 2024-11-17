@@ -22,7 +22,7 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /** 登录接口 POST /api/auth/login */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/auth/login', {
+  return request<API.ResponseResult>('/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -48,6 +48,8 @@ export async function blog(
     currentPage?: number;
     /** 页面的容量 */
     limit?: number;
+    tags?: number[];
+    title?: string;
   },
   options?: { [key: string]: any },
 ) {
@@ -87,5 +89,13 @@ export async function removeBlog(options?: { [key: string]: any }) {
     data: {
       ...(options || {}),
     },
+  });
+}
+
+// 获取博客标签
+export async function getBlogTags(options?: { [key: string]: any }) {
+  return request<API.ResponseResult>('/api/tags', {
+    method: 'GET',
+    ...(options || {}),
   });
 }

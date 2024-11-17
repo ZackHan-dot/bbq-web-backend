@@ -23,7 +23,7 @@ declare namespace API {
     phone?: string;
   };
 
-  type LoginResult = {
+  type ResponseResult = {
     code?: number;
     data?: any;
     message?: string;
@@ -35,6 +35,7 @@ declare namespace API {
   };
 
   type BlogListItem = {
+    id?: number;
     title?: string;
     description?: string;
     published?: boolean;
@@ -53,6 +54,11 @@ declare namespace API {
       total?: number;
     };
     message?: string;
+  };
+
+  type TagListItem = {
+    label?: string;
+    value?: string;
   };
 
   type FakeCaptcha = {

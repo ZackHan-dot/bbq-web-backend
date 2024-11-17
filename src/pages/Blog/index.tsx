@@ -1,64 +1,10 @@
-import { addBlog, blog, removeBlog, updateBlog } from '@/services/ant-design-pro/api';
+import { blog, getBlogTags, removeBlog } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
-import {
-  FooterToolbar,
-  ModalForm,
-  PageContainer,
-  ProDescriptions,
-  ProFormText,
-  ProFormTextArea,
-  ProTable,
-} from '@ant-design/pro-components';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button, Drawer, message } from 'antd';
-import React, { useRef, useState } from 'react';
-import type { FormValueType } from './components/UpdateForm';
-import UpdateForm from './components/UpdateForm';
-
-/**
- * @en-US Add node
- * @zh-CN 添加节点
- * @param fields
- */
-const handleAdd = async (fields: API.BlogListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addBlog({ ...fields });
-    hide();
-    message.success('Added successfully');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Adding failed, please try again!');
-    return false;
-  }
-};
-
-/**
- * @en-US Update node
- * @zh-CN 更新节点
- *
- * @param fields
- */
-const handleUpdate = async (fields: FormValueType) => {
-  const hide = message.loading('Configuring');
-  try {
-    await updateBlog({
-      name: fields.name,
-      desc: fields.desc,
-      key: fields.key,
-    });
-    hide();
-
-    message.success('Configuration is successful');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Configuration failed, please try again!');
-    return false;
-  }
-};
+import { Button, message } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 
 /**
  *  Delete node
@@ -71,7 +17,7 @@ const handleRemove = async (selectedRows: API.BlogListItem[]) => {
   if (!selectedRows) return true;
   try {
     await removeBlog({
-      key: selectedRows.map((row) => row.key),
+      key: selectedRows.map((row) => row.id),
     });
     hide();
     message.success('Deleted successfully and will refresh soon');
@@ -84,23 +30,11 @@ const handleRemove = async (selectedRows: API.BlogListItem[]) => {
 };
 
 const Blog: React.FC = () => {
-  /**
-   * @en-US Pop-up window of new window
-   * @zh-CN 新建窗口的弹窗
-   *  */
-  const [createModalOpen, handleModalOpen] = useState<boolean>(false);
-  /**
-   * @en-US The pop-up window of the distribution update window
-   * @zh-CN 分布更新窗口的弹窗
-   * */
-  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
-
-  const [showDetail, setShowDetail] = useState<boolean>(false);
-
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.BlogListItem>();
   const [selectedRowsState, setSelectedRows] = useState<API.BlogListItem[]>([]);
+  const [tagList, setTagList] = useState<API.TagListItem[]>([]);
 
+  const handleCreateBlog = () => {};
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -109,9 +43,9 @@ const Blog: React.FC = () => {
 
   const columns: ProColumns<API.BlogListItem>[] = [
     {
-      title: <FormattedMessage id="pages.blog.list.title" defaultMessage="标题"></FormattedMessage>,
+      title: <FormattedMessage id="pages.blog.list.title" defaultMessage="标题" />,
       dataIndex: 'title',
-      valueType: 'textarea',
+      valueType: 'text',
     },
     {
       title: <FormattedMessage id="pages.blog.list.user" defaultMessage="作者" />,
@@ -128,6 +62,11 @@ const Blog: React.FC = () => {
     {
       title: <FormattedMessage id="pages.blog.list.tags" defaultMessage="标签" />,
       dataIndex: 'tags',
+      valueType: 'select',
+      fieldProps: {
+        mode: 'multiple',
+        options: tagList,
+      },
       renderText: (val: { name: string }[]) => val?.map((item) => item.name)?.join('，'),
     },
     {
@@ -144,12 +83,20 @@ const Blog: React.FC = () => {
     },
   ];
 
-  const getBlogList = async ({ current, pageSize }: { current?: number; pageSize?: number }) => {
+  const getBlogList = async (params: {
+    tags?: number[];
+    title?: string;
+    current?: number;
+    pageSize?: number;
+  }) => {
+    const { tags, title, current, pageSize } = params;
     const {
       code,
       data,
       message: msg,
     } = await blog({
+      tags,
+      title,
       currentPage: current,
       limit: pageSize,
     });
@@ -167,6 +114,21 @@ const Blog: React.FC = () => {
     }
   };
 
+  const getTagList = async () => {
+    const { code, data, message: msg } = await getBlogTags();
+    if (code === 200) {
+      setTagList(
+        data.map((item: { id: number; name: string }) => ({ label: item.name, value: item.id })),
+      );
+    } else {
+      message.error(msg);
+    }
+  };
+
+  useEffect(() => {
+    getTagList();
+  }, []);
+
   return (
     <PageContainer>
       <ProTable<API.BlogListItem, API.PageParams>
@@ -180,13 +142,7 @@ const Blog: React.FC = () => {
           labelWidth: 120,
         }}
         toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalOpen(true);
-            }}
-          >
+          <Button type="primary" key="primary" onClick={handleCreateBlog}>
             <PlusOutlined /> <FormattedMessage id="pages.blog.add" defaultMessage="添加博客" />
           </Button>,
         ]}
@@ -202,18 +158,9 @@ const Blog: React.FC = () => {
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+              <FormattedMessage id="pages.blog.chosen" defaultMessage="已选择" />{' '}
               <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
-              &nbsp;&nbsp;
-              <span>
-                <FormattedMessage
-                  id="pages.searchTable.totalServiceCalls"
-                  defaultMessage="Total number of service calls"
-                />{' '}
-                {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
-              </span>
+              <FormattedMessage id="pages.blog.item" defaultMessage="项" />
             </div>
           }
         >
@@ -224,98 +171,10 @@ const Blog: React.FC = () => {
               actionRef.current?.reloadAndRest?.();
             }}
           >
-            <FormattedMessage
-              id="pages.searchTable.batchDeletion"
-              defaultMessage="Batch deletion"
-            />
-          </Button>
-          <Button type="primary">
-            <FormattedMessage
-              id="pages.searchTable.batchApproval"
-              defaultMessage="Batch approval"
-            />
+            <FormattedMessage id="pages.blog.batchDeletion" defaultMessage="批量删除" />
           </Button>
         </FooterToolbar>
       )}
-      <ModalForm
-        title={intl.formatMessage({
-          id: 'pages.searchTable.createForm.newRule',
-          defaultMessage: 'New blog',
-        })}
-        width="400px"
-        open={createModalOpen}
-        onOpenChange={handleModalOpen}
-        onFinish={async (value) => {
-          const success = await handleAdd(value as API.BlogListItem);
-          if (success) {
-            handleModalOpen(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-      >
-        <ProFormText
-          rules={[
-            {
-              required: true,
-              message: (
-                <FormattedMessage
-                  id="pages.searchTable.ruleName"
-                  defaultMessage="blog name is required"
-                />
-              ),
-            },
-          ]}
-          width="md"
-          name="name"
-        />
-        <ProFormTextArea width="md" name="desc" />
-      </ModalForm>
-      <UpdateForm
-        onSubmit={async (value) => {
-          const success = await handleUpdate(value);
-          if (success) {
-            handleUpdateModalOpen(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-        onCancel={() => {
-          handleUpdateModalOpen(false);
-          if (!showDetail) {
-            setCurrentRow(undefined);
-          }
-        }}
-        updateModalOpen={updateModalOpen}
-        values={currentRow || {}}
-      />
-
-      <Drawer
-        width={600}
-        open={showDetail}
-        onClose={() => {
-          setCurrentRow(undefined);
-          setShowDetail(false);
-        }}
-        closable={false}
-      >
-        {currentRow?.name && (
-          <ProDescriptions<API.BlogListItem>
-            column={2}
-            title={currentRow?.name}
-            request={async () => ({
-              data: currentRow || {},
-            })}
-            params={{
-              id: currentRow?.name,
-            }}
-            columns={columns as ProDescriptionsItemProps<API.BlogListItem>[]}
-          />
-        )}
-      </Drawer>
     </PageContainer>
   );
 };
