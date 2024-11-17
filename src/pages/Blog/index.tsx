@@ -1,4 +1,4 @@
-import { addRule, removeRule, rule, updateRule } from '@/services/ant-design-pro/api';
+import { addBlog, blog, removeBlog, updateBlog } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
@@ -24,7 +24,7 @@ import UpdateForm from './components/UpdateForm';
 const handleAdd = async (fields: API.RuleListItem) => {
   const hide = message.loading('正在添加');
   try {
-    await addRule({ ...fields });
+    await addBlog({ ...fields });
     hide();
     message.success('Added successfully');
     return true;
@@ -44,7 +44,7 @@ const handleAdd = async (fields: API.RuleListItem) => {
 const handleUpdate = async (fields: FormValueType) => {
   const hide = message.loading('Configuring');
   try {
-    await updateRule({
+    await updateBlog({
       name: fields.name,
       desc: fields.desc,
       key: fields.key,
@@ -70,7 +70,7 @@ const handleRemove = async (selectedRows: API.RuleListItem[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
   try {
-    await removeRule({
+    await removeBlog({
       key: selectedRows.map((row) => row.key),
     });
     hide();
@@ -83,7 +83,7 @@ const handleRemove = async (selectedRows: API.RuleListItem[]) => {
   }
 };
 
-const TableList: React.FC = () => {
+const Blog: React.FC = () => {
   /**
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
@@ -112,11 +112,10 @@ const TableList: React.FC = () => {
       title: (
         <FormattedMessage
           id="pages.searchTable.updateForm.ruleName.nameLabel"
-          defaultMessage="Rule name"
+          defaultMessage="blog name"
         />
       ),
       dataIndex: 'name',
-      tip: 'The rule name is the unique key',
       render: (dom, entity) => {
         return (
           <a
@@ -264,7 +263,7 @@ const TableList: React.FC = () => {
             <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
           </Button>,
         ]}
-        request={rule}
+        request={blog}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -314,7 +313,7 @@ const TableList: React.FC = () => {
       <ModalForm
         title={intl.formatMessage({
           id: 'pages.searchTable.createForm.newRule',
-          defaultMessage: 'New rule',
+          defaultMessage: 'New blog',
         })}
         width="400px"
         open={createModalOpen}
@@ -336,7 +335,7 @@ const TableList: React.FC = () => {
               message: (
                 <FormattedMessage
                   id="pages.searchTable.ruleName"
-                  defaultMessage="Rule name is required"
+                  defaultMessage="blog name is required"
                 />
               ),
             },
@@ -394,4 +393,4 @@ const TableList: React.FC = () => {
   );
 };
 
-export default TableList;
+export default Blog;

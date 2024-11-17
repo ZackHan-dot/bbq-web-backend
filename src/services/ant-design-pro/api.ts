@@ -2,27 +2,27 @@
 /* eslint-disable */
 import { request } from '@umijs/max';
 
-/** 获取当前的用户 GET /api/currentUser */
+/** 获取当前的用户 GET /api/users/current */
 export async function currentUser(options?: { [key: string]: any }) {
   return request<{
     data: API.CurrentUser;
-  }>('/api/currentUser', {
+  }>('/api/users/current', {
     method: 'GET',
     ...(options || {}),
   });
 }
 
-/** 退出登录接口 POST /api/login/outLogin */
+/** 退出登录接口 POST /api/auth/logout */
 export async function outLogin(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/login/outLogin', {
+  return request<Record<string, any>>('/api/auth/logout', {
     method: 'POST',
     ...(options || {}),
   });
 }
 
-/** 登录接口 POST /api/login/account */
+/** 登录接口 POST /api/auth/login */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/login/account', {
+  return request<API.LoginResult>('/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -40,8 +40,8 @@ export async function getNotices(options?: { [key: string]: any }) {
   });
 }
 
-/** 获取规则列表 GET /api/rule */
-export async function rule(
+/** 获取规则列表 GET /api/Blog */
+export async function blog(
   params: {
     // query
     /** 当前的页码 */
@@ -51,7 +51,7 @@ export async function rule(
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.RuleList>('/api/rule', {
+  return request<API.RuleList>('/api/blogs', {
     method: 'GET',
     params: {
       ...params,
@@ -60,34 +60,31 @@ export async function rule(
   });
 }
 
-/** 更新规则 PUT /api/rule */
-export async function updateRule(options?: { [key: string]: any }) {
-  return request<API.RuleListItem>('/api/rule', {
-    method: 'POST',
+/** 更新规则 PUT /api/blogs/update/:id */
+export async function updateBlog(options?: { [key: string]: any }) {
+  return request<API.RuleListItem>(`/api/blogs/update/${options?.id}`, {
+    method: 'PUT',
     data: {
-      method: 'update',
       ...(options || {}),
     },
   });
 }
 
-/** 新建规则 POST /api/rule */
-export async function addRule(options?: { [key: string]: any }) {
-  return request<API.RuleListItem>('/api/rule', {
+/** 新建规则 POST /api/blogs/save */
+export async function addBlog(options?: { [key: string]: any }) {
+  return request<API.RuleListItem>('/api/blogs/save', {
     method: 'POST',
     data: {
-      method: 'post',
       ...(options || {}),
     },
   });
 }
 
-/** 删除规则 DELETE /api/rule */
-export async function removeRule(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/rule', {
+/** 删除规则 DELETE /api/blogs/delete */
+export async function removeBlog(options?: { [key: string]: any }) {
+  return request<Record<string, any>>('/api/blogs/delete', {
     method: 'POST',
     data: {
-      method: 'delete',
       ...(options || {}),
     },
   });
