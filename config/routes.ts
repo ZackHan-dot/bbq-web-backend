@@ -35,6 +35,12 @@ export default [
     component: './Blog',
   },
   {
+    path: '/blog/create',
+    name: 'blogCreate',
+    hideInMenu: true,
+    component: './Blog/Create',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },

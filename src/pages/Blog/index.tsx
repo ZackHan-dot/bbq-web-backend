@@ -2,7 +2,7 @@ import { blog, getBlogTags, removeBlog } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage, useIntl } from '@umijs/max';
+import { FormattedMessage, useIntl, useNavigate } from '@umijs/max';
 import { Button, message } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -33,8 +33,11 @@ const Blog: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [selectedRowsState, setSelectedRows] = useState<API.BlogListItem[]>([]);
   const [tagList, setTagList] = useState<API.TagListItem[]>([]);
+  const navigate = useNavigate();
 
-  const handleCreateBlog = () => {};
+  const handleCreateBlog = () => {
+    navigate('/blog/create', { replace: true });
+  };
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
