@@ -42,4 +42,5 @@ export default {
   'pages.blog.chosen': '已选择',
   'pages.blog.item': '项',
   'pages.blog.batchDeletion': '批量删除',
+  'pages.blogCreate.title': '创建博客',
 };

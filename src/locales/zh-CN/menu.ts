@@ -1,5 +1,5 @@
 export default {
   'menu.welcome': '欢迎',
   'menu.blog': '博客',
-  'menu.blog.create': '创建',
+  'menu.blogCreate': '创建博客',
 };

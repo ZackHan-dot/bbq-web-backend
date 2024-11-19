@@ -48,9 +48,12 @@
   "dependencies": {
     "@ant-design/icons": "^4.8.1",
     "@ant-design/pro-components": "^2.6.48",
+    "@bytemd/plugin-gfm": "^1.21.0",
+    "@bytemd/react": "^1.21.0",
     "@umijs/route-utils": "^2.2.2",
     "antd": "^5.13.2",
     "antd-style": "^3.6.1",
+    "bytemd": "^1.21.0",
     "classnames": "^2.5.1",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
