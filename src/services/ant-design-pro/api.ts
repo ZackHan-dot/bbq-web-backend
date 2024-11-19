@@ -34,7 +34,7 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
 
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
-  return request<API.NoticeIconList>('/api/notices', {
+  return request<API.ResponseResult>('/api/notices', {
     method: 'GET',
     ...(options || {}),
   });
@@ -53,7 +53,7 @@ export async function blog(
   },
   options?: { [key: string]: any },
 ) {
-  return request<API.BlogList>('/api/blogs', {
+  return request<API.ResponseResult>('/api/blogs', {
     method: 'GET',
     params: {
       ...params,
@@ -64,7 +64,7 @@ export async function blog(
 
 /** 更新规则 PUT /api/blogs/update/:id */
 export async function updateBlog(options?: { [key: string]: any }) {
-  return request<API.BlogListItem>(`/api/blogs/update/${options?.id}`, {
+  return request<API.ResponseResult>(`/api/blogs/update/${options?.id}`, {
     method: 'PUT',
     data: {
       ...(options || {}),
@@ -74,7 +74,7 @@ export async function updateBlog(options?: { [key: string]: any }) {
 
 /** 新建规则 POST /api/blogs/save */
 export async function addBlog(options?: { [key: string]: any }) {
-  return request<API.BlogListItem>('/api/blogs/save', {
+  return request<API.ResponseResult>('/api/blogs/save', {
     method: 'POST',
     data: {
       ...(options || {}),
@@ -84,7 +84,7 @@ export async function addBlog(options?: { [key: string]: any }) {
 
 /** 删除规则 DELETE /api/blogs/delete */
 export async function removeBlog(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/blogs/delete', {
+  return request<API.ResponseResult>('/api/blogs/delete', {
     method: 'POST',
     data: {
       ...(options || {}),
