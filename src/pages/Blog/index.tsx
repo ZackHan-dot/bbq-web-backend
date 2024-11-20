@@ -1,43 +1,49 @@
 import { blog, getBlogTags, removeBlog } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl, useNavigate } from '@umijs/max';
-import { Button, message } from 'antd';
+import { Button, message, Modal } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
 /**
  *  Delete node
  * @zh-CN 删除节点
  *
- * @param selectedRows
+ * @param blogId
  */
-const handleRemove = async (selectedRows: API.BlogListItem[]) => {
-  const hide = message.loading('正在删除');
-  if (!selectedRows) return true;
+const handleRemove = async (blogId: number, refreshApi: () => void) => {
   try {
-    await removeBlog({
-      key: selectedRows.map((row) => row.id),
+    const { code, message: msg } = await removeBlog({
+      id: blogId,
     });
-    hide();
-    message.success('Deleted successfully and will refresh soon');
-    return true;
+    if (code === 200) {
+      message.success('删除成功');
+      refreshApi();
+    } else {
+      message.error(msg);
+    }
   } catch (error) {
-    hide();
-    message.error('Delete failed, please try again');
-    return false;
+    message.error('删除失败，请重试');
   }
 };
 
 const Blog: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const [selectedRowsState, setSelectedRows] = useState<API.BlogListItem[]>([]);
   const [tagList, setTagList] = useState<API.TagListItem[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentOpBlog, setCurrentOpBlog] = useState<API.BlogListItem>();
   const navigate = useNavigate();
 
   const handleCreateBlog = () => {
     navigate('/blog/create', { replace: true });
   };
+
+  const showModal = (entity: API.BlogListItem) => {
+    setIsModalOpen(true);
+    setCurrentOpBlog(entity);
+  };
+
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -84,6 +90,23 @@ const Blog: React.FC = () => {
       valueType: 'dateTime',
       hideInSearch: true,
     },
+    {
+      title: <FormattedMessage id="pages.blog.list.action" defaultMessage="操作" />,
+      dataIndex: 'option',
+      width: '150px',
+      hideInSearch: true,
+      render: (text, entity) => {
+        console.log(text, entity);
+        return (
+          <div>
+            <Button type="link">编辑</Button>
+            <Button type="link" onClick={() => showModal(entity)}>
+              删除
+            </Button>
+          </div>
+        );
+      },
+    },
   ];
 
   const getBlogList = async (params: {
@@ -128,6 +151,16 @@ const Blog: React.FC = () => {
     }
   };
 
+  const handleOk = async () => {
+    const { id } = currentOpBlog || {};
+    await handleRemove(id!, () => actionRef.current?.reload());
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     getTagList();
   }, []);
@@ -151,33 +184,10 @@ const Blog: React.FC = () => {
         ]}
         request={getBlogList}
         columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-        }}
       />
-      {selectedRowsState?.length > 0 && (
-        <FooterToolbar
-          extra={
-            <div>
-              <FormattedMessage id="pages.blog.chosen" defaultMessage="已选择" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.blog.item" defaultMessage="项" />
-            </div>
-          }
-        >
-          <Button
-            onClick={async () => {
-              await handleRemove(selectedRowsState);
-              setSelectedRows([]);
-              actionRef.current?.reloadAndRest?.();
-            }}
-          >
-            <FormattedMessage id="pages.blog.batchDeletion" defaultMessage="批量删除" />
-          </Button>
-        </FooterToolbar>
-      )}
+      <Modal title="删除博客" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <p>确定要删除该博客？</p>
+      </Modal>
     </PageContainer>
   );
 };
