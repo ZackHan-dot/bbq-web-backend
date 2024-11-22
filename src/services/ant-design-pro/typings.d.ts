@@ -41,7 +41,7 @@ declare namespace API {
     description?: string;
     published?: boolean;
     user?: any;
-    tags: string[];
+    tags: { id: number }[];
     createdAt: Date;
     updatedAt: Date;
     labels?: { name: string; color: string }[];

@@ -8,16 +8,30 @@ import {
   ProFormTextArea,
 } from '@ant-design/pro-components';
 import { Form, message } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ByteMDEditor } from '../components/Editor';
-import { addBlog, getBlogTags } from '@/services/ant-design-pro/api';
-import { useModel, useNavigate } from '@umijs/max';
+import { addBlog, updateBlog, getBlogTags } from '@/services/ant-design-pro/api';
+import { useLocation, useModel, useNavigate } from '@umijs/max';
+import { parseSearch } from '@/utils/func';
+
+interface formValue {
+  title: string;
+  slug: string;
+  description: string;
+  published: boolean;
+  tags: number[];
+  content: string;
+  coverLink?: string;
+}
 
 const BlogCreate: React.FC = () => {
   const [tagList, setTagList] = useState<API.TagListItem[]>([]);
   const { initialState } = useModel('@@initialState');
+  const { updatedBlog } = useModel('Blog.blogModel');
+  const [isEdit, setIsEdit] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const formRef = useRef<
     ProFormInstance<{
@@ -25,7 +39,7 @@ const BlogCreate: React.FC = () => {
       slug: string;
       description: string;
       published: boolean;
-      tags: string[];
+      tags: number[];
       content: string;
       coverLink?: string;
     }>
@@ -55,32 +69,57 @@ const BlogCreate: React.FC = () => {
     }
   };
 
+  const doUpdateBlog = async (values: any) => {
+    const { id } = parseSearch(location.search);
+    const { code, message: msg } = await updateBlog(+id!, {
+      ...values,
+      userId: initialState?.currentUser?.id,
+    });
+    if (code === 200) {
+      message.success('更新成功');
+      navigate('/blog', { replace: true });
+    } else {
+      message.error(msg);
+    }
+  };
+
   useEffect(() => {
+    if (location.search) {
+      const { title, slug, description, published, tags, content, coverLink } = updatedBlog || {};
+      if (formRef.current) {
+        formRef.current.setFieldsValue({
+          title,
+          slug,
+          description,
+          published,
+          tags,
+          content,
+          coverLink,
+        });
+      }
+      setIsEdit(true);
+    }
     getTagList();
-  }, []);
+  }, [location, updatedBlog, formRef.current]);
+
+  const submit = useCallback(() => {
+    return isEdit ? doUpdateBlog : createBlog;
+  }, [isEdit]);
 
   return (
     <PageContainer>
       <div style={{ background: '#FFFFFF', padding: 16, borderRadius: 6 }}>
-        <ProForm<{
-          title: string;
-          slug: string;
-          description: string;
-          published: boolean;
-          tags: string[];
-          content: string;
-          coverLink?: string;
-        }>
-          onFinish={createBlog}
+        <ProForm<formValue>
+          onFinish={submit()}
           formRef={formRef}
           formKey="create-blog-form"
           initialValues={{
             title: '',
             slug: '',
             description: '',
-            content: '',
             published: false,
             tags: [],
+            content: '',
             coverLink: '',
           }}
           autoFocusFirstInput

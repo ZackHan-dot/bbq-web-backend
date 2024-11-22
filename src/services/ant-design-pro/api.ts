@@ -63,8 +63,8 @@ export async function blog(
 }
 
 /** 更新规则 PUT /api/blogs/update/:id */
-export async function updateBlog(options?: { [key: string]: any }) {
-  return request<API.ResponseResult>(`/api/blogs/update/${options?.id}`, {
+export async function updateBlog(id: number, options?: { [key: string]: any }) {
+  return request<API.ResponseResult>(`/api/blogs/update/${id}`, {
     method: 'PUT',
     data: {
       ...(options || {}),

@@ -2,7 +2,7 @@ import { blog, getBlogTags, removeBlog } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
-import { FormattedMessage, useIntl, useNavigate } from '@umijs/max';
+import { FormattedMessage, useIntl, useModel, useNavigate } from '@umijs/max';
 import { Button, message, Modal } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -33,6 +33,7 @@ const Blog: React.FC = () => {
   const [tagList, setTagList] = useState<API.TagListItem[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentOpBlog, setCurrentOpBlog] = useState<API.BlogListItem>();
+  const { addUpdatedBlog } = useModel('Blog.blogModel');
   const navigate = useNavigate();
 
   const handleCreateBlog = () => {
@@ -42,6 +43,14 @@ const Blog: React.FC = () => {
   const showModal = (entity: API.BlogListItem) => {
     setIsModalOpen(true);
     setCurrentOpBlog(entity);
+  };
+
+  const handleEditBlog = (entity: API.BlogListItem) => {
+    addUpdatedBlog({
+      ...entity,
+      tags: entity?.tags?.map((item) => item.id) || [],
+    });
+    navigate(`/blog/create?id=${entity.id}`, { replace: true });
   };
 
   /**
@@ -96,10 +105,11 @@ const Blog: React.FC = () => {
       width: '150px',
       hideInSearch: true,
       render: (text, entity) => {
-        console.log(text, entity);
         return (
           <div>
-            <Button type="link">编辑</Button>
+            <Button type="link" onClick={() => handleEditBlog(entity)}>
+              编辑
+            </Button>
             <Button type="link" onClick={() => showModal(entity)}>
               删除
             </Button>
