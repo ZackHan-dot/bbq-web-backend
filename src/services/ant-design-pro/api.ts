@@ -93,9 +93,59 @@ export async function removeBlog(options?: { [key: string]: any }) {
 }
 
 // 获取博客标签
-export async function getBlogTags(options?: { [key: string]: any }) {
+export async function getBlogTags(
+  params?: {
+    name?: string;
+    tagTypeId?: number;
+  },
+  options?: { [key: string]: any },
+) {
   return request<API.ResponseResult>('/api/tags', {
     method: 'GET',
+    params: {
+      ...params,
+    },
     ...(options || {}),
+  });
+}
+
+export async function removeTag(options?: { [key: string]: any }) {
+  return request<API.ResponseResult>('/api/tags/delete', {
+    method: 'POST',
+    data: {
+      ...(options || {}),
+    },
+  });
+}
+
+export async function getTagTypeList(options?: { [key: string]: any }) {
+  return request<API.ResponseResult>('/api/tags-type', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+export async function addTag(
+  params: {
+    id?: number;
+    name?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<API.ResponseResult>('/api/tags/save', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+export async function updateTag(id: number, options?: { [key: string]: any }) {
+  return request<API.ResponseResult>(`/api/tags/update/${id}`, {
+    method: 'PUT',
+    data: {
+      ...(options || {}),
+    },
   });
 }

@@ -41,6 +41,18 @@ export default [
     component: './Blog/Create',
   },
   {
+    path: '/tag',
+    icon: 'TagFilled',
+    name: 'tag',
+    component: './Tag',
+  },
+  {
+    path: '/tag/create',
+    name: 'tagCreate',
+    hideInMenu: true,
+    component: './Tag/Create',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
