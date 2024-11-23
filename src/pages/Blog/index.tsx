@@ -50,7 +50,7 @@ const Blog: React.FC = () => {
       ...entity,
       tags: entity?.tags?.map((item) => item.id) || [],
     });
-    navigate(`/blog/create?id=${entity.id}`, { replace: true });
+    navigate(`/blog/update?id=${entity.id}`, { replace: true });
   };
 
   /**

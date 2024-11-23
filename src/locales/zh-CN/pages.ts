@@ -1,5 +1,5 @@
 export default {
-  'pages.layouts.userLayout.title': '个人博客管理系统，基于antd-pro搭建',
+  'pages.layouts.userLayout.title': '个人博客管理系统，分享知识，记录生活',
   'pages.login.accountLogin.tab': '账户密码登录',
   'pages.login.accountLogin.errorMessage': '错误的用户名和密码(admin/ant.design)',
   'pages.login.failure': '登录失败，请重试！',

@@ -107,7 +107,7 @@ const BlogCreate: React.FC = () => {
   }, [isEdit]);
 
   return (
-    <PageContainer>
+    <PageContainer title={isEdit ? '更新博客' : '创建博客'}>
       <div style={{ background: '#FFFFFF', padding: 16, borderRadius: 6 }}>
         <ProForm<formValue>
           onFinish={submit()}

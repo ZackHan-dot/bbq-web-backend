@@ -32,7 +32,7 @@ const Tag: React.FC = () => {
 
   const handleEditTag = (entity: API.TagTableItem) => {
     addUpdatedTag(entity);
-    navigate(`/tag/create?id=${entity.id}`, { replace: true });
+    navigate(`/tag/update?id=${entity.id}`, { replace: true });
   };
 
   const showModal = (entity: API.TagTableItem) => {

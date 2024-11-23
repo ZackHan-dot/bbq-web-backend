@@ -23,12 +23,6 @@ export default [
     ],
   },
   {
-    path: '/welcome',
-    name: 'welcome',
-    icon: 'smile',
-    component: './Welcome',
-  },
-  {
     name: 'blog',
     icon: 'ReadFilled',
     path: '/blog',
@@ -37,6 +31,12 @@ export default [
   {
     path: '/blog/create',
     name: 'blogCreate',
+    hideInMenu: true,
+    component: './Blog/Create',
+  },
+  {
+    path: '/blog/update',
+    name: 'blogUpdate',
     hideInMenu: true,
     component: './Blog/Create',
   },
@@ -53,8 +53,14 @@ export default [
     component: './Tag/Create',
   },
   {
+    path: '/tag/update',
+    name: 'tagUpdate',
+    hideInMenu: true,
+    component: './Tag/Create',
+  },
+  {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/blog',
   },
   {
     path: '*',

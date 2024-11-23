@@ -15,7 +15,7 @@ const Settings: ProLayoutProps & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: '小韩博客管理系统',
+  title: '博客管理系统',
   pwa: true,
   logo: '/logo.png',
   iconfontUrl: '',
