@@ -76,7 +76,7 @@ const TagCreate: React.FC = () => {
       setIsEdit(true);
     }
     getTagTypes();
-  }, []);
+  }, [updatedTag]);
 
   return (
     <PageContainer title={isEdit ? '更新标签' : '创建标签'}>
