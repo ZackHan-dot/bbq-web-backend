@@ -1,6 +1,7 @@
 import gfm from '@bytemd/plugin-gfm';
 import { Editor } from '@bytemd/react';
 import { useState, useEffect } from 'react';
+import zhHans from 'bytemd/locales/zh_Hans.json';
 import 'bytemd/dist/index.css';
 
 const plugins = [gfm()];
@@ -28,7 +29,12 @@ export const ByteMDEditor = (props: ByteMDEditorProps) => {
 
   return (
     <div id={id}>
-      <Editor value={editorValue} plugins={plugins} onChange={handleEditorValueChange} />
+      <Editor
+        value={editorValue}
+        plugins={plugins}
+        locale={zhHans}
+        onChange={handleEditorValueChange}
+      />
     </div>
   );
 };
