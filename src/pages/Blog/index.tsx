@@ -135,6 +135,8 @@ const Blog: React.FC = () => {
       title,
       currentPage: current,
       limit: pageSize,
+      sortBy: 'createdAt',
+      sortOrder: 'DESC',
     });
     if (code === 200) {
       return {

@@ -50,6 +50,8 @@ export async function blog(
     limit?: number;
     tags?: number[];
     title?: string;
+    sortBy?: string;
+    sortOrder: 'ASC' | 'DESC';
   },
   options?: { [key: string]: any },
 ) {
