@@ -1,5 +1,7 @@
 import { ProLayoutProps } from '@ant-design/pro-components';
 
+const { PUBLIC_PATH = '/' } = process.env;
+
 /**
  * @name
  */
@@ -17,7 +19,7 @@ const Settings: ProLayoutProps & {
   colorWeak: false,
   title: '博客管理系统',
   pwa: true,
-  logo: '/logo.png',
+  logo: `${PUBLIC_PATH}logo.png`,
   iconfontUrl: '',
   token: {
     // 参见ts声明，demo 见文档，通过token 修改样式

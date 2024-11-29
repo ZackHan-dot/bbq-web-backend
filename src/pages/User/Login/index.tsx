@@ -10,6 +10,8 @@ import React, { useMemo, useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 
+const { PUBLIC_PATH = '/' } = process.env;
+
 const useStyles = createStyles(({ token }) => {
   return {
     action: {
@@ -149,7 +151,7 @@ const Login: React.FC = () => {
             minWidth: 280,
             maxWidth: '75vw',
           }}
-          logo={<img alt="logo" src="/logo.png" />}
+          logo={<img alt="logo" src={`${PUBLIC_PATH}/logo.png`} />}
           title="小韩日记"
           subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
           initialValues={{
