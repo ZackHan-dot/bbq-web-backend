@@ -3,7 +3,7 @@ import { login } from '@/services/ant-design-pro/api';
 import { setToken } from '@/utils/local';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
-import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
+import { FormattedMessage, Helmet, SelectLang, useIntl, useModel } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
 import { createStyles } from 'antd-style';
 import React, { useMemo, useState } from 'react';
@@ -107,7 +107,7 @@ const Login: React.FC = () => {
         }
         await fetchUserInfo();
         const urlParams = new URL(window.location.href).searchParams;
-        history.push(urlParams.get('redirect') || '/');
+        window.location.href = urlParams.get('redirect') || '/';
         return;
       }
       console.log(msg);
