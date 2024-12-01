@@ -156,4 +156,7 @@ export default defineConfig({
   },
   esbuildMinifyIIFE: true,
   requestRecord: {},
+  define: {
+    BLOG_URL: 'http://localhost:3000',
+  },
 });
