@@ -1,3 +1,5 @@
+import { Editor } from '@bytemd/react';
+import { useState, useEffect } from 'react';
 import gfm from '@bytemd/plugin-gfm';
 import math from '@bytemd/plugin-math-ssr';
 import highlight from '@bytemd/plugin-highlight-ssr';
@@ -5,13 +7,11 @@ import breaks from '@bytemd/plugin-breaks';
 import frontmatter from '@bytemd/plugin-frontmatter';
 import mermaid from '@bytemd/plugin-mermaid';
 import gemoji from '@bytemd/plugin-gemoji';
-import { Editor } from '@bytemd/react';
-import { useState, useEffect } from 'react';
 import zhHans from 'bytemd/locales/zh_Hans.json';
-import 'bytemd/dist/index.css';
 import 'highlight.js/styles/default.css';
+import 'bytemd/dist/index.css';
 import 'katex/dist/katex.css';
-
+import 'juejin-markdown-themes/dist/juejin.min.css';
 const plugins = [gfm(), highlight(), math(), breaks(), frontmatter(), gemoji(), mermaid()];
 
 interface ByteMDEditorProps {

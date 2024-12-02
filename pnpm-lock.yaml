@@ -56,6 +56,9 @@ importers:
       highlight.js:
         specifier: ^11.10.0
         version: 11.10.0
+      juejin-markdown-themes:
+        specifier: ^1.34.0
+        version: 1.34.0
       katex:
         specifier: ^0.16.11
         version: 0.16.11
@@ -6666,6 +6669,9 @@ packages:
   jsx-ast-utils@3.3.5:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
+
+  juejin-markdown-themes@1.34.0:
+    resolution: {integrity: sha512-oislBW4mmMLfLFNLO+ywtcRd9eWBs8A9wE9w4ENqAkbRquSJKaBQX+4m6r3P+gLft4bvAMUhD+6ASRf2AWPL8A==}
 
   just-diff-apply@5.5.0:
     resolution: {integrity: sha512-OYTthRfSh55WOItVqwpefPtNt2VdKsq5AnAK6apdtR6yCH8pr0CmSr710J0Mf+WdQy7K/OzMy7K2MgAfdQURDw==}
@@ -14473,22 +14479,22 @@ snapshots:
     dependencies:
       '@babel/core': 7.26.0
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss@8.4.49)
     transitivePeerDependencies:
       - supports-color
 
-  '@stylelint/postcss-css-in-js@0.38.0(postcss-syntax@0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39))(postcss@8.4.49)':
+  '@stylelint/postcss-css-in-js@0.38.0(postcss-syntax@0.36.2(postcss@8.4.49))(postcss@8.4.49)':
     dependencies:
       '@babel/core': 7.23.6
       postcss: 8.4.49
-      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss@8.4.49)
     transitivePeerDependencies:
       - supports-color
 
   '@stylelint/postcss-markdown@0.36.2(postcss-syntax@0.36.2(postcss@8.4.49))(postcss@7.0.39)':
     dependencies:
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss@8.4.49)
       remark: 13.0.0
       unist-util-find-all-after: 3.0.2
     transitivePeerDependencies:
@@ -15396,7 +15402,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.23.6
       '@babel/eslint-parser': 7.23.3(@babel/core@7.23.6)(eslint@8.35.0)
-      '@stylelint/postcss-css-in-js': 0.38.0(postcss-syntax@0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39))(postcss@8.4.49)
+      '@stylelint/postcss-css-in-js': 0.38.0(postcss-syntax@0.36.2(postcss@8.4.49))(postcss@8.4.49)
       '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.35.0)(typescript@5.7.2)
       '@typescript-eslint/parser': 5.62.0(eslint@8.35.0)(typescript@5.7.2)
       '@umijs/babel-preset-umi': 4.3.35
@@ -15422,7 +15428,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.23.6
       '@babel/eslint-parser': 7.23.3(@babel/core@7.23.6)(eslint@8.57.1)
-      '@stylelint/postcss-css-in-js': 0.38.0(postcss-syntax@0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39))(postcss@8.4.49)
+      '@stylelint/postcss-css-in-js': 0.38.0(postcss-syntax@0.36.2(postcss@8.4.49))(postcss@8.4.49)
       '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2)
       '@typescript-eslint/parser': 5.62.0(eslint@8.57.1)(typescript@5.7.2)
       '@umijs/babel-preset-umi': 4.3.35
@@ -20760,6 +20766,8 @@ snapshots:
       object.assign: 4.1.5
       object.values: 1.2.0
 
+  juejin-markdown-themes@1.34.0: {}
+
   just-diff-apply@5.5.0: {}
 
   just-diff@5.2.0: {}
@@ -22690,7 +22698,7 @@ snapshots:
     dependencies:
       htmlparser2: 3.10.1
       postcss: 7.0.39
-      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss@8.4.49)
 
   postcss-image-set-function@4.0.7(postcss@8.4.49):
     dependencies:
@@ -22871,7 +22879,7 @@ snapshots:
       lodash: 4.17.21
       postcss: 8.4.49
 
-  postcss-syntax@0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39):
+  postcss-syntax@0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@8.4.49))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39):
     dependencies:
       postcss: 7.0.39
     optionalDependencies:
@@ -25324,7 +25332,7 @@ snapshots:
       postcss-sass: 0.4.4
       postcss-scss: 2.1.1
       postcss-selector-parser: 6.1.2
-      postcss-syntax: 0.36.2(postcss-html@0.36.0)(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
+      postcss-syntax: 0.36.2(postcss-html@0.36.0(postcss-syntax@0.36.2(postcss@8.4.49))(postcss@7.0.39))(postcss-less@3.1.4)(postcss-scss@2.1.1)(postcss@7.0.39)
       postcss-value-parser: 4.2.0
       resolve-from: 5.0.0
       slash: 3.0.0
