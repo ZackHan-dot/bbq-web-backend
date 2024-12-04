@@ -5,14 +5,13 @@ import math from '@bytemd/plugin-math-ssr';
 import highlight from '@bytemd/plugin-highlight-ssr';
 import breaks from '@bytemd/plugin-breaks';
 import frontmatter from '@bytemd/plugin-frontmatter';
-import mermaid from '@bytemd/plugin-mermaid';
 import gemoji from '@bytemd/plugin-gemoji';
 import zhHans from 'bytemd/locales/zh_Hans.json';
 import 'highlight.js/styles/default.css';
 import 'bytemd/dist/index.css';
 import 'katex/dist/katex.css';
 import 'juejin-markdown-themes/dist/juejin.min.css';
-const plugins = [gfm(), highlight(), math(), breaks(), frontmatter(), gemoji(), mermaid()];
+const plugins = [gfm(), highlight(), math(), breaks(), frontmatter(), gemoji()];
 
 interface ByteMDEditorProps {
   id?: string;

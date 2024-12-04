@@ -54,7 +54,6 @@
     "@bytemd/plugin-gfm": "^1.21.0",
     "@bytemd/plugin-highlight-ssr": "^1.21.0",
     "@bytemd/plugin-math-ssr": "^1.21.0",
-    "@bytemd/plugin-mermaid": "^1.21.0",
     "@bytemd/react": "^1.21.0",
     "@umijs/route-utils": "^2.2.2",
     "antd": "^5.13.2",
